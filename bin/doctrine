@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Hong\Command\HelloCommand;
+use Hong\Command\AddProductCommand;
+use Hong\Command\AddFeatureCommand;
+use Hong\Command\ProductListCommand;
+
+// replace with path to your own project bootstrap file
+require_once __DIR__ . '/../bootstrap.php';
+
+// replace with mechanism to retrieve EntityManager in your app
+// $entityManager = GetEntityManager();
+
+$commands = [
+    // If you want to add your own custom console commands,
+    // you can do so here.
+    // run with:   php bin/doctrine hello
+    new HelloCommand(),
+    new AddProductCommand($entityManager),
+    new AddFeatureCommand($entityManager),
+    new ProductListCommand($entityManager)
+];
+
+ConsoleRunner::run(
+    new SingleManagerProvider($entityManager),
+    $commands
+);
