@@ -32,9 +32,6 @@ class ProductListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // $productRepository = $this->entityManager->getRepository('Hong\Entity\Product');
-        // $products = $productRepository->findAll();
-
         $repo = new ProductRepository();
         $products = $repo->getProducts();
 
@@ -42,7 +39,6 @@ class ProductListCommand extends Command
             echo sprintf("%s-%s\n", $product->getId(), $product->getName());
         }
 
-        // $output->writeln("Created Product with ID  " . $product->getId());
         return Command::SUCCESS;
     }
 

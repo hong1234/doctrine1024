@@ -49,7 +49,6 @@ class AddFeatureCommand extends Command
         $featureId = $repo->addFeature($feature);
         
         $output->writeln("Created Feature with ID  " . $featureId);
-
         return Command::SUCCESS;
     }
     
