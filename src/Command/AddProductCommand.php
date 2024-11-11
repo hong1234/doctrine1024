@@ -6,21 +6,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-use Doctrine\ORM\EntityManager;
+// use Doctrine\ORM\EntityManager;
 use Hong\Entity\Product;
+use Hong\Repository\ProductRepository;
 
 class AddProductCommand extends Command
 {
-    public function __construct(
-        private EntityManager $entityManager,
-    ){
-        parent::__construct();
-    }
+    // public function __construct(
+    //     private EntityManager $entityManager,
+    // ){
+    //     parent::__construct();
+    // }
 
     protected function configure()
     {
         $this
-            // defining the command name
+            // defining the command name 
             ->setName('add-product')
             // defining the description of the command 
             ->setDescription('adding a new product')
@@ -37,10 +38,13 @@ class AddProductCommand extends Command
         $product = new Product();
         $product->setName($newProductName);
 
-        $this->entityManager->persist($product);
-        $this->entityManager->flush();
+        // $this->entityManager->persist($product);
+        // $this->entityManager->flush();
 
-        $output->writeln("Created Product with ID  " . $product->getId());
+        $repo = new ProductRepository();
+        $productId = $repo->addProduct($product);
+
+        $output->writeln("Created Product with ID  " . $productId);
 
         return Command::SUCCESS;
     }

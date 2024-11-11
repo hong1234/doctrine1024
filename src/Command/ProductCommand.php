@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Hong\Repository\ProductRepository;
 
-class ProductListCommand extends Command
+class ProductCommand extends Command
 {
     // public function __construct(
     //     private EntityManager $entityManager,
@@ -23,23 +23,27 @@ class ProductListCommand extends Command
     {
         $this
             // defining the command name
-            ->setName('show-product-list')
+            ->setName('show-product')
             // defining the description of the command 
-            ->setDescription('show all products')
+            ->setDescription('show a product')
             // defining the help (shown with -h option)
-            ->setHelp('This command shows all products');
+            ->setHelp('This command shows a product');
+        
+        $this->addArgument('productid', InputArgument::REQUIRED, 'The product id.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // $productRepository = $this->entityManager->getRepository('Hong\Entity\Product');
-        // $products = $productRepository->findAll();
+        $productid = $input->getArgument('productid');
 
         $repo = new ProductRepository();
-        $products = $repo->getProducts();
+        $product = $repo->getProductByID($productid);
+        $features = $product->getFeatures();
 
-        foreach ($products as $product) {
-            echo sprintf("%s-%s\n", $product->getId(), $product->getName());
+        echo sprintf("%s-%s\n", $product->getId(), $product->getName());
+
+        foreach ($features as $feature) {
+            echo sprintf("%s\n", $feature->getName());
         }
 
         // $output->writeln("Created Product with ID  " . $product->getId());

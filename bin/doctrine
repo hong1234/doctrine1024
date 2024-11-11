@@ -1,27 +1,32 @@
 #!/usr/bin/env php
 <?php
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+use Hong\Repository\DbManager;
 use Hong\Command\HelloCommand;
 use Hong\Command\AddProductCommand;
 use Hong\Command\AddFeatureCommand;
 use Hong\Command\ProductListCommand;
+use Hong\Command\ProductCommand;
 
 // replace with path to your own project bootstrap file
-require_once __DIR__ . '/../bootstrap.php';
+// require_once __DIR__ . '/../bootstrap.php';
 
-// replace with mechanism to retrieve EntityManager in your app
-// $entityManager = GetEntityManager();
+$instance = DbManager::getInstance();
+$entityManager = $instance->getEntityManager();
 
 $commands = [
     // If you want to add your own custom console commands,
     // you can do so here.
     // run with:   php bin/doctrine hello
-    new HelloCommand(),
-    new AddProductCommand($entityManager),
-    new AddFeatureCommand($entityManager),
-    new ProductListCommand($entityManager)
+    // new HelloCommand(),
+    new AddProductCommand(),
+    new AddFeatureCommand(),
+    new ProductListCommand(),
+    new ProductCommand()
 ];
 
 ConsoleRunner::run(

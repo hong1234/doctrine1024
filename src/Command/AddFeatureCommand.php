@@ -9,14 +9,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Doctrine\ORM\EntityManager;
 use Hong\Entity\Feature;
 // use Hong\Entity\Product;
+use Hong\Repository\FeatureRepository;
 
 class AddFeatureCommand extends Command
 {
-    public function __construct(
-        private EntityManager $entityManager,
-    ){
-        parent::__construct();
-    }
+    // public function __construct(
+    //     private EntityManager $entityManager,
+    // ){
+    //     parent::__construct();
+    // }
 
     protected function configure()
     {
@@ -36,17 +37,18 @@ class AddFeatureCommand extends Command
     {
         $productId   = $input->getArgument('productid');
         $featureName = $input->getArgument('featurename');
-        
-        $product = $this->entityManager->find('Hong\Entity\Product', $productId);
+
+        $repo = new FeatureRepository();
+
+        $product = $repo->getProductByID($productId);
 
         $feature = new Feature();
         $feature->setName($featureName);
         $feature->setProduct($product);
 
-        $this->entityManager->persist($feature);
-        $this->entityManager->flush();
-
-        $output->writeln("Created Feature with ID  " . $feature->getId());
+        $featureId = $repo->addFeature($feature);
+        
+        $output->writeln("Created Feature with ID  " . $featureId);
 
         return Command::SUCCESS;
     }
